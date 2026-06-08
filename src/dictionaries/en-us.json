@@ -1,0 +1,29 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Me",
+    "projects": "Projects",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Modern Interactive Portfolio",
+    "subtitle": "Inspired by the modern large-scale web architecture of GRYPHLINE. Fast performance, smooth animations, and premium design.",
+    "cta": "View My Projects",
+    "docs": "Documentation"
+  },
+  "about": {
+    "title": "About Me",
+    "description": "I am a software developer focused on building modern, aesthetic, and high-performance interactive web interfaces."
+  },
+  "projects": {
+    "title": "Featured Projects",
+    "view_more": "View More"
+  },
+  "contact": {
+    "title": "Contact Me",
+    "name": "Your Name",
+    "email": "Email Address",
+    "message": "Message",
+    "send": "Send Message"
+  }
+}

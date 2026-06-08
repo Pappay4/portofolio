@@ -1,0 +1,29 @@
+{
+  "nav": {
+    "home": "Beranda",
+    "about": "Tentang Saya",
+    "projects": "Proyek",
+    "contact": "Kontak"
+  },
+  "hero": {
+    "title": "Portofolio Interaktif Modern",
+    "subtitle": "Terinspirasi oleh arsitektur web modern skala besar dari GRYPHLINE. Performa cepat, animasi mulus, dan desain premium.",
+    "cta": "Lihat Proyek Saya",
+    "docs": "Dokumentasi"
+  },
+  "about": {
+    "title": "Tentang Saya",
+    "description": "Saya adalah seorang pengembang perangkat lunak yang berfokus pada pembuatan antarmuka web interaktif yang modern, estetik, dan berkinerja tinggi."
+  },
+  "projects": {
+    "title": "Proyek Unggulan",
+    "view_more": "Selengkapnya"
+  },
+  "contact": {
+    "title": "Hubungi Saya",
+    "name": "Nama Anda",
+    "email": "Alamat Email",
+    "message": "Pesan",
+    "send": "Kirim Pesan"
+  }
+}
