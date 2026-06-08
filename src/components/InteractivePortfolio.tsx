@@ -10,6 +10,7 @@ interface Dictionary {
     home: string;
     about: string;
     projects: string;
+    gallery: string;
     contact: string;
   };
   hero: {
@@ -26,6 +27,17 @@ interface Dictionary {
     title: string;
     view_more: string;
   };
+  gallery: {
+    title: string;
+    subtitle: string;
+    tab_wallpaper: string;
+    tab_stickers: string;
+    download: string;
+    specs: string;
+    dimension: string;
+    format: string;
+    style: string;
+  };
   contact: {
     title: string;
     name: string;
@@ -39,6 +51,105 @@ interface InteractivePortfolioProps {
   dict: Dictionary;
   lang: string;
 }
+
+interface Artwork {
+  id: string;
+  title: string;
+  code: string;
+  type: "wallpaper" | "sticker";
+  description: {
+    "id-id": string;
+    "en-us": string;
+  };
+  image: string;
+  specs: {
+    dimension: string;
+    format: string;
+    style: {
+      "id-id": string;
+      "en-us": string;
+    };
+  };
+}
+
+const artworks: Artwork[] = [
+  {
+    id: "wp-01",
+    title: "Cyber Operator",
+    code: "WP-01",
+    type: "wallpaper",
+    description: {
+      "id-id": "Karya ilustrasi digital beresolusi tinggi yang menggambarkan operator taktis siber di dalam pusat komando. Menghadirkan atmosfer kontras tinggi dengan garis-garis teknologi kuning elektrik khas Endfield.",
+      "en-us": "A high-resolution digital illustration depicting a cyber tactical operator inside a command center. Features a high-contrast atmosphere with signature electric yellow tech lines."
+    },
+    image: "/images/wallpaper_cyber_operator.png",
+    specs: {
+      dimension: "3840 x 2160 (4K)",
+      format: "PNG Image",
+      style: {
+        "id-id": "Ilustrasi Digital Cyberpunk",
+        "en-us": "Cyberpunk Digital Painting"
+      }
+    }
+  },
+  {
+    id: "wp-02",
+    title: "Tactical Cognition",
+    code: "WP-02",
+    type: "wallpaper",
+    description: {
+      "id-id": "Visualisasi grid abstrak siber yang menggambarkan aliran data taktis. Memadukan warna kuning elektrik di atas abu-abu arang untuk kesan antarmuka kontrol militer.",
+      "en-us": "An abstract cybernetic grid visualization depicting information flow. Combines electric yellow lines over deep charcoal for a military control interface feel."
+    },
+    image: "/images/wallpaper_cyber_operator.png",
+    specs: {
+      dimension: "1920 x 1080 (FHD)",
+      format: "PNG Image",
+      style: {
+        "id-id": "Seni Vektor Minimalis",
+        "en-us": "Minimalist Vector Art"
+      }
+    }
+  },
+  {
+    id: "st-01",
+    title: "Chibi Technician",
+    code: "ST-01",
+    type: "sticker",
+    description: {
+      "id-id": "Desain stiker karakter chibi teknisi luar angkasa taktis dengan telinga robotik. Memiliki garis luar yang tebal dan bersih, dioptimalkan untuk cetak maupun stiker digital.",
+      "en-us": "A vector sticker design of a cute chibi tactical space technician with robotic ears. Features thick, clean outlines optimized for print or digital sticker packs."
+    },
+    image: "/images/sticker_chibi_technician.png",
+    specs: {
+      dimension: "1000 x 1000",
+      format: "Transparent PNG",
+      style: {
+        "id-id": "Seni Vektor Chibi Kawaii",
+        "en-us": "Kawaii Chibi Vector Art"
+      }
+    }
+  },
+  {
+    id: "st-02",
+    title: "EF Pilot Chibi",
+    code: "ST-02",
+    type: "sticker",
+    description: {
+      "id-id": "Karakter chibi pilot penjelajah Endfield dengan helm kedap udara dan ornamen tali keselamatan taktis kuning.",
+      "en-us": "Chibi character design of an Endfield explorer pilot with a sealed spacesuit helmet and tactical safety cord accents."
+    },
+    image: "/images/sticker_chibi_technician.png",
+    specs: {
+      dimension: "1000 x 1000",
+      format: "Transparent PNG",
+      style: {
+        "id-id": "Seni Vektor Cyber Kawaii",
+        "en-us": "Kawaii Cyber Vector Art"
+      }
+    }
+  }
+];
 
 export default function InteractivePortfolio({ dict, lang }: InteractivePortfolioProps) {
   const router = useRouter();
@@ -54,6 +165,17 @@ export default function InteractivePortfolio({ dict, lang }: InteractivePortfoli
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const [activeNav, setActiveNav] = useState("home");
 
+  // Gallery states
+  const [galleryTab, setGalleryTab] = useState<"wallpaper" | "sticker">("wallpaper");
+  const filteredArtworks = artworks.filter((art) => art.type === galleryTab);
+  const [selectedArtwork, setSelectedArtwork] = useState<Artwork>(filteredArtworks[0]);
+
+  // Sync selected artwork when galleryTab changes
+  useEffect(() => {
+    const list = artworks.filter((art) => art.type === galleryTab);
+    setSelectedArtwork(list[0]);
+  }, [galleryTab]);
+
   // Handle language switch
   const switchLanguage = (newLang: string) => {
     const segments = pathname.split("/");
@@ -63,7 +185,7 @@ export default function InteractivePortfolio({ dict, lang }: InteractivePortfoli
 
   // GSAP animations on load
   useGSAP(() => {
-    const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
     tl.fromTo(
       titleRef.current,
@@ -147,7 +269,7 @@ export default function InteractivePortfolio({ dict, lang }: InteractivePortfoli
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Draw faint cyber grid lines (10% opacity)
+      // Draw faint cyber grid lines (1.5% opacity)
       ctx.strokeStyle = "rgba(255, 250, 0, 0.015)";
       ctx.lineWidth = 1;
       const gridSize = 80;
@@ -188,7 +310,6 @@ export default function InteractivePortfolio({ dict, lang }: InteractivePortfoli
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            // Mix connection colors
             ctx.strokeStyle = `rgba(120, 120, 120, ${0.1 * (1 - dist / 180)})`;
             ctx.stroke();
           }
@@ -241,19 +362,19 @@ export default function InteractivePortfolio({ dict, lang }: InteractivePortfoli
         <div className="max-w-7xl mx-auto px-8 h-full flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-accent-yellow flex items-center justify-center font-bold text-black text-sm tracking-wider font-display-demi">
-              EF
+              FR
             </div>
             <span className="font-display-demi text-lg tracking-widest text-white">
-              ENDFIELD<span className="text-accent-yellow font-light">.PORT</span>
+              FRISTIAN<span className="text-accent-yellow font-light">.PORT</span>
             </span>
           </div>
 
           {/* Nav menu links */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-display-demi tracking-wider">
+          <nav className="hidden md:flex items-center gap-6 text-sm font-display-demi tracking-wider">
             <a
               href="#home"
               onClick={() => setActiveNav("home")}
-              className={`py-2 px-4 transition-colors hover:text-accent-yellow hover:underline ${
+              className={`py-2 px-3 transition-colors hover:text-accent-yellow hover:underline ${
                 activeNav === "home" ? "text-accent-yellow border-b-2 border-accent-yellow" : "text-white"
               }`}
             >
@@ -262,7 +383,7 @@ export default function InteractivePortfolio({ dict, lang }: InteractivePortfoli
             <a
               href="#about"
               onClick={() => setActiveNav("about")}
-              className={`py-2 px-4 transition-colors hover:text-accent-yellow hover:underline ${
+              className={`py-2 px-3 transition-colors hover:text-accent-yellow hover:underline ${
                 activeNav === "about" ? "text-accent-yellow border-b-2 border-accent-yellow" : "text-white"
               }`}
             >
@@ -271,16 +392,25 @@ export default function InteractivePortfolio({ dict, lang }: InteractivePortfoli
             <a
               href="#projects"
               onClick={() => setActiveNav("projects")}
-              className={`py-2 px-4 transition-colors hover:text-accent-yellow hover:underline ${
+              className={`py-2 px-3 transition-colors hover:text-accent-yellow hover:underline ${
                 activeNav === "projects" ? "text-accent-yellow border-b-2 border-accent-yellow" : "text-white"
               }`}
             >
               {dict.nav.projects.toUpperCase()}
             </a>
             <a
+              href="#gallery"
+              onClick={() => setActiveNav("gallery")}
+              className={`py-2 px-3 transition-colors hover:text-accent-yellow hover:underline ${
+                activeNav === "gallery" ? "text-accent-yellow border-b-2 border-accent-yellow" : "text-white"
+              }`}
+            >
+              {dict.nav.gallery.toUpperCase()}
+            </a>
+            <a
               href="#contact"
               onClick={() => setActiveNav("contact")}
-              className={`py-2 px-4 transition-colors hover:text-accent-yellow hover:underline ${
+              className={`py-2 px-3 transition-colors hover:text-accent-yellow hover:underline ${
                 activeNav === "contact" ? "text-accent-yellow border-b-2 border-accent-yellow" : "text-white"
               }`}
             >
@@ -315,7 +445,7 @@ export default function InteractivePortfolio({ dict, lang }: InteractivePortfoli
       </header>
 
       {/* Main Sections */}
-      <main className="flex-1 flex flex-col items-center justify-start z-10">
+      <main className="flex-1 flex flex-col items-center justify-start z-10 w-full">
         
         {/* HERO SECTION */}
         <section
@@ -402,9 +532,7 @@ export default function InteractivePortfolio({ dict, lang }: InteractivePortfoli
                     {dict.about.description}
                   </p>
                   <p className="text-gray-4 leading-relaxed text-sm">
-                    Mengadopsi pola dari web resmi *Arknights: Endfield*, proyek ini mendemonstrasikan
-                    transisi antarmuka yang sangat responsif, optimalisasi pemuatan gambar dan video latar
-                    belakang (*mobile-first*), serta pengelolaan bahasa dinamis di server maupun client.
+                    Saya lulusan Teknik Informatika sekaligus Digital Ilustrator yang bergerak di irisan teknologi dan seni visual. Sebagai Web Developer dengan latar belakang desain, saya tidak hanya membangun sistem web yang fungsional, adaptif, dan berkinerja tinggi, tetapi juga mengemasnya dengan estetika visual yang memanjakan mata. Kombinasi unik ini memungkinkan saya menciptakan produk digital yang tidak hanya bekerja secara cerdas di balik layar, tetapi juga terlihat luar biasa di depan layar.
                   </p>
                 </div>
               </div>
@@ -486,12 +614,194 @@ export default function InteractivePortfolio({ dict, lang }: InteractivePortfoli
           </div>
         </section>
 
+        {/* CREATIVE GALLERY SECTION (Inspired by Operator page) */}
+        <section id="gallery" className="w-full py-24 border-t border-surface-secondary bg-surface-dark">
+          <div className="max-w-7xl mx-auto px-8">
+            <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-6">
+              <div>
+                <span className="text-xs font-mono tracking-widest text-accent-yellow uppercase block mb-2">
+                  // 03. ARTWORKS ARCHIVE
+                </span>
+                <h2 className="text-h1 uppercase text-white tracking-wider">
+                  {dict.gallery.title}
+                </h2>
+                <p className="text-sm text-gray-2 max-w-xl mt-2">
+                  {dict.gallery.subtitle}
+                </p>
+              </div>
+
+              {/* Tab Toggles (Wallpaper & Stickers) */}
+              <div className="flex items-center gap-2 border-b border-surface-secondary pb-1 w-full md:w-auto">
+                <button
+                  onClick={() => setGalleryTab("wallpaper")}
+                  className={`px-4 py-2 font-display-demi tracking-widest text-sm uppercase transition-colors relative cursor-pointer min-h-[44px] ${
+                    galleryTab === "wallpaper" ? "text-accent-yellow font-bold" : "text-gray-1 hover:text-white"
+                  }`}
+                >
+                  {dict.gallery.tab_wallpaper}
+                  {galleryTab === "wallpaper" && (
+                    <span className="absolute bottom-[-5px] left-0 right-0 h-[2px] bg-accent-yellow" />
+                  )}
+                </button>
+                <button
+                  onClick={() => setGalleryTab("sticker")}
+                  className={`px-4 py-2 font-display-demi tracking-widest text-sm uppercase transition-colors relative cursor-pointer min-h-[44px] ${
+                    galleryTab === "sticker" ? "text-accent-yellow font-bold" : "text-gray-1 hover:text-white"
+                  }`}
+                >
+                  {dict.gallery.tab_stickers}
+                  {galleryTab === "sticker" && (
+                    <span className="absolute bottom-[-5px] left-0 right-0 h-[2px] bg-accent-yellow" />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Operator Page Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+              
+              {/* Left Side: Active Artwork Large Frame (6 columns) */}
+              <div className="lg:col-span-7 ef-card-elevated tactical-border-corners flex flex-col justify-between p-6 bg-[#0c0c0c] min-h-[450px]">
+                {/* Tactical HUD Header */}
+                <div className="flex items-center justify-between text-2xs font-mono text-gray-1 uppercase tracking-widest border-b border-surface-secondary pb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent-yellow animate-pulse" />
+                    <span>SYS_PREVIEW: ON_STAGE</span>
+                  </div>
+                  <span>LAT. 34.205 // LONG. 108.968</span>
+                </div>
+
+                {/* Main Image View */}
+                <div className="flex-1 flex items-center justify-center py-8 relative group overflow-hidden">
+                  {/* Fine layout markers */}
+                  <div className="absolute top-2 left-2 w-4 h-4 border-t border-l border-gray-1/30 pointer-events-none" />
+                  <div className="absolute top-2 right-2 w-4 h-4 border-t border-r border-gray-1/30 pointer-events-none" />
+                  <div className="absolute bottom-2 left-2 w-4 h-4 border-b border-l border-gray-1/30 pointer-events-none" />
+                  <div className="absolute bottom-2 right-2 w-4 h-4 border-b border-r border-gray-1/30 pointer-events-none" />
+
+                  {selectedArtwork ? (
+                    <img
+                      src={selectedArtwork.image}
+                      alt={selectedArtwork.title}
+                      className="max-h-[350px] object-contain transition-transform duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="text-gray-1 font-mono text-xs">NO ASSET LOADED</div>
+                  )}
+                </div>
+
+                {/* HUD Footer */}
+                <div className="flex items-center justify-between text-2xs font-mono text-gray-1 border-t border-surface-secondary pt-3">
+                  <span>FORMAT_LOADED: {selectedArtwork?.specs.format.toUpperCase()}</span>
+                  <span>ENDFIELD TECHNICAL SYSTEM</span>
+                </div>
+              </div>
+
+              {/* Center Side: Active Artwork Information (5 columns) */}
+              <div className="lg:col-span-5 flex flex-col justify-between gap-6">
+                
+                {/* Info Card */}
+                <div className="ef-card tactical-border-corners flex-1 flex flex-col justify-between">
+                  <div>
+                    {/* Badge and Code name */}
+                    <div className="flex items-center justify-between mb-4 border-b border-surface-secondary pb-3">
+                      <span className="text-sm font-mono text-accent-yellow tracking-widest font-bold">
+                        {selectedArtwork?.code}
+                      </span>
+                      <span className="ef-badge text-[9px] uppercase tracking-wider font-mono">
+                        {selectedArtwork?.type.toUpperCase()}
+                      </span>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-h2 uppercase text-white tracking-widest mb-4">
+                      {selectedArtwork?.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-gray-2 text-sm leading-relaxed mb-6 font-light">
+                      {selectedArtwork?.description[lang as "id-id" | "en-us"]}
+                    </p>
+                  </div>
+
+                  {/* Specs Table */}
+                  <div>
+                    <h4 className="text-xs font-mono text-gray-1 uppercase tracking-widest mb-3">
+                      // {dict.gallery.specs}
+                    </h4>
+                    <div className="border border-surface-secondary text-xs font-mono">
+                      <div className="flex justify-between border-b border-surface-secondary p-2.5">
+                        <span className="text-gray-1 uppercase">{dict.gallery.dimension}</span>
+                        <span className="text-white">{selectedArtwork?.specs.dimension}</span>
+                      </div>
+                      <div className="flex justify-between border-b border-surface-secondary p-2.5">
+                        <span className="text-gray-1 uppercase">{dict.gallery.format}</span>
+                        <span className="text-white">{selectedArtwork?.specs.format}</span>
+                      </div>
+                      <div className="flex justify-between p-2.5">
+                        <span className="text-gray-1 uppercase">{dict.gallery.style}</span>
+                        <span className="text-white text-right">{selectedArtwork?.specs.style[lang as "id-id" | "en-us"]}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Large CTA Action Button */}
+                <a
+                  href={selectedArtwork?.image}
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ef-btn-primary min-h-[50px] w-full text-center tracking-widest"
+                >
+                  {dict.gallery.download.toUpperCase()}
+                </a>
+              </div>
+            </div>
+
+            {/* Bottom Select List - Operator Avatars (Artworks list) */}
+            <div className="mt-8 border-t border-surface-secondary pt-8">
+              <h4 className="text-xs font-mono text-gray-1 uppercase tracking-widest mb-4">
+                // SELECT OPERATOR ARCHIVE
+              </h4>
+              <div className="flex gap-4 overflow-x-auto pb-4">
+                {filteredArtworks.map((art) => (
+                  <button
+                    key={art.id}
+                    onClick={() => setSelectedArtwork(art)}
+                    className={`flex-shrink-0 flex items-center gap-3 p-3 border transition-all cursor-pointer min-h-[60px] ${
+                      selectedArtwork?.id === art.id
+                        ? "bg-accent-yellow/10 border-accent-yellow"
+                        : "bg-surface-secondary/40 border-surface-secondary hover:border-gray-1"
+                    }`}
+                  >
+                    {/* Tiny Thumbnail */}
+                    <div className="w-8 h-8 bg-zinc-900 border border-zinc-800 flex items-center justify-center overflow-hidden">
+                      <img src={art.image} alt="" className="object-contain w-full h-full" />
+                    </div>
+                    {/* Code name & text */}
+                    <div className="text-left font-mono">
+                      <div className={`text-[10px] ${selectedArtwork?.id === art.id ? "text-accent-yellow" : "text-gray-1"}`}>
+                        {art.code}
+                      </div>
+                      <div className="text-xs text-white font-bold tracking-wider truncate max-w-[120px]">
+                        {art.title.toUpperCase()}
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </section>
+
         {/* CONTACT SECTION */}
         <section id="contact" className="w-full py-24 border-t border-surface-secondary bg-surface-dark/40">
           <div className="max-w-4xl mx-auto px-8">
             <div className="flex flex-col items-center text-center mb-16">
               <span className="text-xs font-mono tracking-widest text-accent-yellow uppercase block mb-2">
-                // 03. CONNECT
+                // 04. CONNECT
               </span>
               <h2 className="text-h1 uppercase text-white tracking-wider">
                 {dict.contact.title}

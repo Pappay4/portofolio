@@ -1,4 +1,4 @@
-# Design System Inspired by Arknights: Endfield
+# Design System Inspired
 
 ## 1. Visual Theme & Atmosphere
 

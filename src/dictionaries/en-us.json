@@ -3,6 +3,7 @@
     "home": "Home",
     "about": "About Me",
     "projects": "Projects",
+    "gallery": "Gallery",
     "contact": "Contact"
   },
   "hero": {
@@ -18,6 +19,17 @@
   "projects": {
     "title": "Featured Projects",
     "view_more": "View More"
+  },
+  "gallery": {
+    "title": "Creative Gallery",
+    "subtitle": "Collection of digital illustrations, wallpapers, and stickers with a sci-fi and tactical theme.",
+    "tab_wallpaper": "Wallpaper",
+    "tab_stickers": "Stickers",
+    "download": "Download File",
+    "specs": "Specifications",
+    "dimension": "Dimensions",
+    "format": "Format",
+    "style": "Visual Style"
   },
   "contact": {
     "title": "Contact Me",

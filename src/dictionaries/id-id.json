@@ -3,6 +3,7 @@
     "home": "Beranda",
     "about": "Tentang Saya",
     "projects": "Proyek",
+    "gallery": "Galeri Karya",
     "contact": "Kontak"
   },
   "hero": {
@@ -18,6 +19,17 @@
   "projects": {
     "title": "Proyek Unggulan",
     "view_more": "Selengkapnya"
+  },
+  "gallery": {
+    "title": "Galeri Karya",
+    "subtitle": "Kumpulan hasil ilustrasi digital, wallpaper, dan stiker bertema fiksi ilmiah dan taktis.",
+    "tab_wallpaper": "Wallpaper",
+    "tab_stickers": "Stiker",
+    "download": "Unduh Berkas",
+    "specs": "Spesifikasi",
+    "dimension": "Dimensi",
+    "format": "Format",
+    "style": "Gaya Visual"
   },
   "contact": {
     "title": "Hubungi Saya",
